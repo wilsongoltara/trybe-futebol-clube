@@ -4,10 +4,9 @@ import * as chai from "chai";
 import chaiHttp = require("chai-http");
 
 import { app } from "../app";
-import Example from "../database/models/ExampleModel";
-
-import { Response } from "superagent";
 import Users from "../database/models/UsersModel";
+import errorMessages from "../utils/errorMessages";
+import statusHttp from "../utils/statusHttp";
 
 chai.use(chaiHttp);
 
@@ -23,9 +22,9 @@ describe('Test the endpoint "/login":', () => {
           email: "test@test.com",
         });
 
-      expect(httpResponseOnlyEmail.status).to.be.equal(400);
+      expect(httpResponseOnlyEmail.status).to.be.equal(statusHttp.badRequest);
       expect(httpResponseOnlyEmail.body).to.deep.equal({
-        message: "All fields must be filled",
+        message: errorMessages.allFields,
       });
     });
 
@@ -37,9 +36,9 @@ describe('Test the endpoint "/login":', () => {
           password: "admin@admin.com",
         });
 
-      expect(httpResponseOnlyPassword.status).to.be.equal(400);
+      expect(httpResponseOnlyPassword.status).to.be.equal(statusHttp.badRequest);
       expect(httpResponseOnlyPassword.body).to.deep.equal({
-        message: "All fields must be filled",
+        message: errorMessages.allFields,
       });
     });
 
@@ -51,9 +50,9 @@ describe('Test the endpoint "/login":', () => {
         password: "secret_admin",
       });
 
-      expect(httpResponse.status).to.be.equal(401);
+      expect(httpResponse.status).to.be.equal(statusHttp.unauthorized);
       expect(httpResponse.body).to.deep.equal({
-        message: "Incorrect email or password",
+        message: errorMessages.incorrectFields,
       });
 
       sinon.restore();
@@ -72,7 +71,7 @@ describe('Test the endpoint "/login":', () => {
 
       expect(httpResponse.status).to.be.equal(401);
       expect(httpResponse.body).to.deep.equal({
-        message: "Incorrect email or password",
+        message: errorMessages.incorrectFields,
       });
 
       sinon.restore();

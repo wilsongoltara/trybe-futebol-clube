@@ -1,5 +1,5 @@
 const errorMessages = {
-  allFields: 'All fileds must be filled',
+  allFields: 'All fields must be filled',
   incorrectFields: 'Incorrect email or password',
 };
 
