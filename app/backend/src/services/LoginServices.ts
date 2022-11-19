@@ -4,8 +4,7 @@ import Users from '../database/models/UsersModel';
 import Token from '../utils/generateToken';
 import ErrorStatusMessage from '../middlewares/ErrorStatusMessage';
 import statusHttp from '../utils/statusHttp';
-
-const invalidFields = 'Incorrect email or password';
+import errorMessages from '../utils/errorMessages';
 
 export default class LoginServices {
   constructor(private _model = Users) {}
@@ -15,11 +14,15 @@ export default class LoginServices {
 
     const validUser = await this._model.findOne({ where: { email } });
 
-    if (!validUser) { throw new ErrorStatusMessage(invalidFields, statusHttp.unauthorized); }
+    if (!validUser) {
+      throw new ErrorStatusMessage(errorMessages.incorrectFields, statusHttp.unauthorized);
+    }
 
     const validPassword = await compare(password, validUser.password);
 
-    if (!validPassword) { throw new ErrorStatusMessage(invalidFields, statusHttp.unauthorized); }
+    if (!validPassword) {
+      throw new ErrorStatusMessage(errorMessages.incorrectFields, statusHttp.unauthorized);
+    }
 
     const token = Token.generateToken(validUser.id, validUser.role);
 
