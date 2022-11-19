@@ -7,9 +7,15 @@ export default class MatchesController {
     this._service = _service;
   }
 
-  getAllMatches = async (_req: Request, res: Response) => {
-    const listMatches = await this._service.getListMatches();
+  getAllMatches = async (req: Request, res: Response) => {
+    const { inProgress } = req.query;
 
-    return res.status(statusHttp.ok).json(listMatches);
+    if (!inProgress) {
+      const listMatches = await this._service.getListMatches();
+      return res.status(statusHttp.ok).json(listMatches);
+    }
+
+    const listMatchesInProgress = await this._service.getMatchesInProgress(inProgress === 'true');
+    return res.status(statusHttp.ok).json(listMatchesInProgress);
   };
 }
