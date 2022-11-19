@@ -1,10 +1,10 @@
 import { Secret, sign } from 'jsonwebtoken';
 
-const { JWT_SECRET = 'jwt_secret' } = process.env;
+const { JWT_SECRET } = process.env;
 
 function generateToken(id: number, role: string): string {
-  const payload = { id, role };
-  const token = sign(payload, JWT_SECRET as Secret);
+  const token = sign({ id, role }, JWT_SECRET as Secret);
+
   return token;
 }
 
