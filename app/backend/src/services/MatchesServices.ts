@@ -1,8 +1,9 @@
+import IMatches from '../interfaces/IMatches';
 import Matches from '../database/models/MatchesModel';
 import Teams from '../database/models/TeamsModel';
 
 export default class MatchesServices {
-  constructor(private _model = Matches) { }
+  constructor(private _model = Matches) {}
 
   async getListMatches(): Promise<Matches[]> {
     const matches = await this._model.findAll({
@@ -25,5 +26,19 @@ export default class MatchesServices {
     });
 
     return matchesInProgress;
+  }
+
+  async createMatch(match: IMatches): Promise<IMatches> {
+    const { awayTeam, awayTeamGoals, homeTeam, homeTeamGoals } = match;
+
+    const newMatch = await this._model.create({
+      awayTeam,
+      awayTeamGoals,
+      homeTeam,
+      homeTeamGoals,
+      inProgress: true,
+    });
+
+    return newMatch;
   }
 }
