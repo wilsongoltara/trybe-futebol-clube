@@ -1,7 +1,8 @@
-import ITeams from '../interfaces/ITeams';
-import Teams from '../database/models/TeamsModel';
+import errorMessages from '../utils/errorMessages';
 import ErrorStatusMessage from '../middlewares/ErrorStatusMessage';
+import ITeams from '../interfaces/ITeams';
 import statusHttp from '../utils/statusHttp';
+import Teams from '../database/models/TeamsModel';
 
 export default class TeamsServices {
   constructor(private _model = Teams) { }
@@ -15,7 +16,7 @@ export default class TeamsServices {
   async getTeamById(id: number): Promise<ITeams> {
     const team = await this._model.findByPk(id);
 
-    if (!team) throw new ErrorStatusMessage('Not found team with such id!', statusHttp.notFound);
+    if (!team) throw new ErrorStatusMessage(errorMessages.notFounfTeam, statusHttp.notFound);
 
     return team;
   }
