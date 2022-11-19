@@ -12,33 +12,33 @@ class Users extends Model {
 Users.init(
   {
     id: {
-      type: INTEGER,
       allowNull: false,
-      primaryKey: true,
       autoIncrement: true,
+      primaryKey: true,
+      type: INTEGER,
     },
     username: {
-      type: STRING(100),
       allowNull: false,
+      type: STRING(100),
     },
     role: {
-      type: STRING(100),
       allowNull: false,
+      type: STRING(100),
     },
     email: {
-      type: STRING(100),
       allowNull: false,
+      type: STRING(100),
     },
     password: {
-      type: STRING(100),
       allowNull: false,
+      type: STRING(100),
     },
   },
   {
-    underscored: true,
-    sequelize: db,
     modelName: 'Users',
+    sequelize: db,
     timestamps: false,
+    underscored: true,
   },
 );
 
