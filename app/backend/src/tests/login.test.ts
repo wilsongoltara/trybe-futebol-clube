@@ -73,7 +73,7 @@ describe('Test the endpoint "/login":', () => {
         password: "teste_teste",
       });
 
-      expect(httpResponse.status).to.be.equal(401);
+      expect(httpResponse.status).to.be.equal(statusHttp.unauthorized);
       expect(httpResponse.body).to.deep.equal({
         message: errorMessages.incorrectFields,
       });
@@ -98,7 +98,7 @@ describe('Test the endpoint "/login":', () => {
         password: "secret_admin",
       });
 
-      expect(httpResponse.status).to.be.equal(200);
+      expect(httpResponse.status).to.be.equal(statusHttp.ok);
     });
 
     it("Receive the token", async () => {
@@ -112,6 +112,53 @@ describe('Test the endpoint "/login":', () => {
       expect(httpResponse.body).to.deep.equal({ token: "random_token" });
 
       sinon.restore();
+    });
+  });
+});
+
+describe('Test endpoint "/login/validate"', () => {
+  describe('Unsuccessful auth', () => {
+    it('Receive stauts "401" not token', async () => {
+      const httpResponse = await chai.request(app).get('/login/validate').send();
+
+      expect(httpResponse.status).to.be.equal(statusHttp);
+      expect(httpResponse.body).to.deep.equal({ message: errorMessages.notFoundToken });
+    });
+
+    it('Receive status "401" invalid token', async () => {
+      const httpResponse = await chai
+        .request(app)
+        .get('/login/validate')
+        .set('Authorization', 'noToken');
+
+      expect(httpResponse.status).to.be.equal(statusHttp.unauthorized);
+      expect(httpResponse.body).to.deep.equal({ message: errorMessages.notFoundTeam });
+    });
+  });
+  
+  describe('Successuful auth', () => {
+    beforeEach(() => {
+      sinon.stub(Users, 'findOne')
+        .resolves({ email: 'admin@admin.com', password: 'secrect_admin' } as any);
+      sinon.stub(bcrypt, 'compare').resolves(true);
+      sinon.stub(Token, 'generateToken')
+        .resolves('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjY4OTAxODEyfQ.IinvYgDjVR3lu57UpxecIixOL-GSqVCjwzXfvAKdf4k')
+    });
+    afterEach(sinon.restore);
+
+    it('get user role and status "200"', async () => {
+      const httpResponseLogin = await chai.request(app).post('/login').send({
+        email: 'admin@admin.com',
+        password: 'secret_admin',
+      });
+
+      const { token } = httpResponseLogin.body;
+
+      const httpResponse = await chai.request(app).get('/login/validate')
+        .send().set('Authorization', token);
+
+      expect(httpResponse.status).to.be.equal(statusHttp.ok);
+      expect(httpResponse.body).to.deep.equal({ role: 'admin' });
     });
   });
 });
