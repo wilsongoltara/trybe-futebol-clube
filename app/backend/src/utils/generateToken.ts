@@ -8,4 +8,4 @@ function generateToken(id: number, role: string): string {
   return token;
 }
 
-export default generateToken;
+export default { generateToken };
