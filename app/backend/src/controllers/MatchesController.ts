@@ -18,4 +18,12 @@ export default class MatchesController {
     const listMatchesInProgress = await this._service.getMatchesInProgress(inProgress === 'true');
     return res.status(statusHttp.ok).json(listMatchesInProgress);
   };
+
+  addMatch = async (req: Request, res: Response) => {
+    const match = req.body;
+
+    const newMatch = await this._service.createMatch(match);
+
+    res.status(statusHttp.created).json(newMatch);
+  };
 }
