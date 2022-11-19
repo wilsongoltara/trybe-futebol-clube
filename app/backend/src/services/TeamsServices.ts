@@ -16,7 +16,7 @@ export default class TeamsServices {
   async getTeamById(id: number): Promise<ITeams> {
     const team = await this._model.findByPk(id);
 
-    if (!team) throw new ErrorStatusMessage(errorMessages.notFounfTeam, statusHttp.notFound);
+    if (!team) throw new ErrorStatusMessage(errorMessages.notFoundTeam, statusHttp.notFound);
 
     return team;
   }
