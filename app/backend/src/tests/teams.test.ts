@@ -14,8 +14,8 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('7 - Test the endpoint: "/teams":', () => { 
-  describe("7.1 - Request made successfully:", () => {
+describe('8 - Test the endpoint: "/teams":', () => { 
+  describe("8.1 - Request made successfully:", () => {
     beforeEach(() => sinon.stub(Teams, "findAll").resolves(teams as any));
     afterEach(sinon.restore);
 
@@ -28,8 +28,8 @@ describe('7 - Test the endpoint: "/teams":', () => {
   });
 });
 
-describe('8 - Test the endpoint "/teams/:id":', () => {
-  describe("8.1 - Request made unsuccessfully:", () => {
+describe('9 - Test the endpoint "/teams/:id":', () => {
+  describe("9.1 - Request made unsuccessfully:", () => {
     beforeEach(() => sinon.stub(Teams, "findByPk").resolves(null));
     afterEach(sinon.restore);
 
@@ -43,7 +43,7 @@ describe('8 - Test the endpoint "/teams/:id":', () => {
     });
   });
 
-  describe("8.2 - Request made successfully:", () => {
+  describe("9.2 - Request made successfully:", () => {
     beforeEach(() => sinon.stub(Teams, "findByPk").resolves(teams[0] as any));
     afterEach(sinon.restore);
 
