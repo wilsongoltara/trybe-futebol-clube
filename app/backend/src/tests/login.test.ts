@@ -121,7 +121,7 @@ describe('Test endpoint "/login/validate"', () => {
     it('Receive stauts "401" not token', async () => {
       const httpResponse = await chai.request(app).get('/login/validate').send();
 
-      expect(httpResponse.status).to.be.equal(statusHttp);
+      expect(httpResponse.status).to.be.equal(statusHttp.unauthorized);
       expect(httpResponse.body).to.deep.equal({ message: errorMessages.notFoundToken });
     });
 
@@ -132,7 +132,7 @@ describe('Test endpoint "/login/validate"', () => {
         .set('Authorization', 'noToken');
 
       expect(httpResponse.status).to.be.equal(statusHttp.unauthorized);
-      expect(httpResponse.body).to.deep.equal({ message: errorMessages.notFoundTeam });
+      expect(httpResponse.body).to.deep.equal({ message: errorMessages.invalidToken });
     });
   });
   
