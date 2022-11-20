@@ -1,20 +1,21 @@
 import * as sinon from "sinon";
 import * as chai from "chai";
+
 // @ts-ignore
 import chaiHttp = require("chai-http");
 
 import { app } from "../app";
-import teams from "./expectResults/teams";
-import Teams from "../database/models/TeamsModel";
 import errorMessages from "../utils/errorMessages";
 import statusHttp from "../utils/statusHttp";
+import teams from "./expectResults/teams";
+import Teams from "../database/models/TeamsModel";
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Test the endpoint: "/teams":', () => { 
-  describe("Request made successfully:", () => {
+describe('-- Test the endpoint: "/teams":', () => { 
+  describe("- Request made successfully:", () => {
     beforeEach(() => sinon.stub(Teams, "findAll").resolves(teams as any));
     afterEach(sinon.restore);
 
@@ -28,8 +29,8 @@ describe('Test the endpoint: "/teams":', () => {
     
   });
 
-  describe('Test the endpoint "/teams/:id"', () => {
-    describe("Request made successfully", () => {
+  describe('-- Test the endpoint "/teams/:id":', () => {
+    describe("- Request made unsuccessfully:", () => {
       beforeEach(() => sinon.stub(Teams, "findByPk").resolves(null));
       afterEach(sinon.restore);
 
@@ -43,7 +44,7 @@ describe('Test the endpoint: "/teams":', () => {
       });
     });
 
-    describe("Request made successfully", () => {
+    describe("- Request made successfully:", () => {
       beforeEach(() => sinon.stub(Teams, "findByPk").resolves(teams[0] as any));
       afterEach(sinon.restore);
 
