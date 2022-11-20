@@ -10,57 +10,26 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Teste the endpoint "/"', () => {
-  describe('successful request', () => {
-    it('receive message "ok"', async () => {
+describe('-- Teste the endpoint "/":', () => {
+  describe('- Successful request: -', () => {
+    it('Receive message "ok"', async () => {
       const httpResponse = await chai.request(app).get("/");
       expect(httpResponse.body).to.deep.equal({ ok: true });
     });
   });
 
-  describe("Teste the error middleware", () => {
-    it('Receive status "500"', async () => {
-      sinon.stub(LoginService.prototype, "login").rejects();
-
-      const httpResponse = await chai.request(app).post("/login").send({
-        email: "email@email.com",
-        password: "alcalinaasl",
-      });
-      expect(httpResponse.status).to.be.equal(500);
-
-      sinon.restore();
-    });
-  });
 });
 
-// describe('Seu teste', () => {
-//   /**
-//    * Exemplo do uso de stubs com tipos
-//    */
+describe("-- Teste the error middleware:", () => {
+  it('Receive status "500"', async () => {
+    sinon.stub(LoginService.prototype, "login").rejects();
 
-//   // let chaiHttpResponse: Response;
+    const httpResponse = await chai.request(app).post("/login").send({
+      email: "email@email.com",
+      password: "alcalinaasl",
+    });
+    expect(httpResponse.status).to.be.equal(500);
 
-//   // before(async () => {
-//   //   sinon
-//   //     .stub(Example, "findOne")
-//   //     .resolves({
-//   //       ...<Seu mock>
-//   //     } as Example);
-//   // });
-
-//   // after(()=>{
-//   //   (Example.findOne as sinon.SinonStub).restore();
-//   // })
-
-//   // it('...', async () => {
-//   //   chaiHttpResponse = await chai
-//   //      .request(app)
-//   //      ...
-
-//   //   expect(...)
-//   // });
-
-//   it('Seu sub-teste', () => {
-//     expect(false).to.be.eq(true);
-//   });
-// });
+    sinon.restore();
+  });
+});
