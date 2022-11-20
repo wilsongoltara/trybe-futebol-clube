@@ -5,7 +5,7 @@ import * as chai from "chai";
 import chaiHttp = require("chai-http");
 
 import { app } from "../app";
-import errorMessages from "../utils/errorMessages";
+import errorMessages from "../utils/Messages";
 import statusHttp from "../utils/statusHttp";
 import teams from "./expectResults/teams";
 import Teams from "../database/models/TeamsModel";

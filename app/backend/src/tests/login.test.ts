@@ -6,7 +6,7 @@ import * as bcrypt from "bcryptjs";
 import chaiHttp = require("chai-http");
 
 import { app } from "../app";
-import errorMessages from "../utils/errorMessages";
+import errorMessages from "../utils/Messages";
 import statusHttp from "../utils/statusHttp";
 import Token from "../utils/generateToken";
 import Users from "../database/models/UsersModel";

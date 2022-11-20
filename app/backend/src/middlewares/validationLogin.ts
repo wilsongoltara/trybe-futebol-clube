@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import errorMessages from '../utils/errorMessages';
+import messages from '../utils/Messages';
 import IUserLogin from '../interfaces/IUserLogin';
 import statusHttp from '../utils/statusHttp';
 
@@ -8,7 +8,7 @@ const validationLogin = (req: Request, res: Response, next: NextFunction) => {
 
   if (!user.email || !user.password) {
     return res.status(statusHttp.badRequest).json({
-      message: errorMessages.allFields,
+      message: messages.allFields,
     });
   }
 

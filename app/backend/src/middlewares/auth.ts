@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import jwt = require('jsonwebtoken');
-import errorMessages from '../utils/errorMessages';
+import messages from '../utils/Messages';
 import statusHttp from '../utils/statusHttp';
 
 const { JWT_SECRET } = process.env;
@@ -11,7 +11,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
 
   if (!authorization) {
     return res.status(statusHttp.unauthorized).json({
-      message: errorMessages.notFoundToken,
+      message: messages.notFoundToken,
     });
   }
 
@@ -21,7 +21,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
     return next();
   } catch (_error) {
     return res.status(statusHttp.unauthorized).json({
-      message: errorMessages.invalidToken,
+      message: messages.invalidToken,
     });
   }
 };

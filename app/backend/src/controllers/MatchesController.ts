@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import statusHttp from '../utils/statusHttp';
 import MatchesServices from '../services/MatchesServices';
-import errorMessages from '../utils/errorMessages';
+import messages from '../utils/Messages';
 
 export default class MatchesController {
   constructor(private _service: MatchesServices) {
@@ -24,7 +24,9 @@ export default class MatchesController {
       return res.status(statusHttp.ok).json(listMatches);
     }
 
-    const listMatchesInProgress = await this._service.getMatchesInProgress(inProgress === 'true');
+    const listMatchesInProgress = await this._service.getMatchesInProgress(
+      inProgress === 'true',
+    );
     return res.status(statusHttp.ok).json(listMatchesInProgress);
   };
 
@@ -33,6 +35,6 @@ export default class MatchesController {
 
     await this._service.updateProgress(Number(id));
 
-    return res.status(statusHttp.ok).json({ message: errorMessages.finished });
+    return res.status(statusHttp.ok).json({ message: messages.finished });
   };
 }
