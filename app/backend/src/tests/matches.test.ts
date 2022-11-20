@@ -1,26 +1,27 @@
 import * as sinon from "sinon";
 import * as chai from "chai";
 import * as bcrypt from "bcryptjs";
+
 // @ts-ignore
 import chaiHttp = require("chai-http");
 
 import { app } from "../app";
-import statusHttp from "../utils/statusHttp";
 import Matches from "../database/models/MatchesModel";
 import matches from "./expectResults/matches";
 import matchesInProgress from "./expectResults/matchesInProgress";
-import Users from "../database/models/UsersModel";
-import Token from "../utils/generateToken";
+import newMatch from "./expectResults/newMatch";
+import statusHttp from "../utils/statusHttp";
 import Teams from "../database/models/TeamsModel";
 import teams from "./expectResults/teams";
-import newMatch from "./expectResults/newMatch";
+import Token from "../utils/generateToken";
+import Users from "../database/models/UsersModel";
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Test the endpoint: "/matches":', () => {
-  describe("Request made successfully:", () => {
+describe('-- Test the endpoint: "/matches":', () => {
+  describe("- Request made successfully:", () => {
     beforeEach(() => sinon.stub(Matches, "findAll").resolves(matches as any));
     afterEach(sinon.restore);
 
@@ -76,8 +77,8 @@ describe('Test the endpoint: "/matches":', () => {
   });
 });
 
-describe('Test the endpoint "/matches?inProgress=true"', () => {
-  describe("Request made successfully", () => {
+describe('-- Test the endpoint "/matches?inProgress=true":', () => {
+  describe("- Request made successfully:", () => {
     beforeEach(() =>
       sinon.stub(Matches, "findAll").resolves(matchesInProgress as any)
     );
