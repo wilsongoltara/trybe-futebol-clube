@@ -15,6 +15,7 @@ import Teams from "../database/models/TeamsModel";
 import teams from "./expectResults/teams";
 import Token from "../utils/generateToken";
 import Users from "../database/models/UsersModel";
+import errorMessages from "../utils/errorMessages";
 
 chai.use(chaiHttp);
 
@@ -91,6 +92,22 @@ describe('6 - Test the endpoint "/matches?inProgress=true":', () => {
 
       expect(httpResponse.status).to.be.equal(statusHttp.ok);
       expect(httpResponse.body).to.deep.equal(matchesInProgress);
+    });
+  });
+});
+
+describe('7 - Test the endpoint "/matches/:id/finish":', () => {
+  describe("7.1 - Request made successfully:", () => {
+    beforeEach(() =>
+      sinon.stub(Matches, "update").resolves(null as any)
+    );
+    afterEach(sinon.restore);
+
+    it('Alter status of match and receive status "200"', async () => {
+      const httpResponse = await chai.request(app).patch("/matches/2/finish");
+
+      expect(httpResponse.status).to.be.equal(statusHttp.ok);
+      expect(httpResponse.body).to.deep.equal({ message: errorMessages.finished });
     });
   });
 });
