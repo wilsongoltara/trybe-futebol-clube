@@ -1,11 +1,20 @@
 import { Request, Response } from 'express';
 import statusHttp from '../utils/statusHttp';
 import MatchesServices from '../services/MatchesServices';
+import errorMessages from '../utils/errorMessages';
 
 export default class MatchesController {
   constructor(private _service: MatchesServices) {
     this._service = _service;
   }
+
+  addMatch = async (req: Request, res: Response) => {
+    const match = req.body;
+
+    const newMatch = await this._service.createMatch(match);
+
+    res.status(statusHttp.created).json(newMatch);
+  };
 
   getAllMatches = async (req: Request, res: Response) => {
     const { inProgress } = req.query;
@@ -19,11 +28,11 @@ export default class MatchesController {
     return res.status(statusHttp.ok).json(listMatchesInProgress);
   };
 
-  addMatch = async (req: Request, res: Response) => {
-    const match = req.body;
+  finishMatch = async (req: Request, res: Response) => {
+    const { id } = req.params;
 
-    const newMatch = await this._service.createMatch(match);
+    await this._service.updateProgress(Number(id));
 
-    res.status(statusHttp.created).json(newMatch);
+    return res.status(statusHttp.ok).json({ message: errorMessages.finished });
   };
 }
