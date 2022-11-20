@@ -76,6 +76,100 @@ describe('5 - Test the endpoint: "/matches":', () => {
       sinon.restore();
     });
   });
+
+  describe("5.2 - Request made unsuccessfully:", () => {
+    it('Receive status "404" with invalid match', async () => {
+      sinon
+        .stub(Users, "findOne")
+        .resolves({
+          email: "admin@admin.com",
+          password: "secrect_admin",
+        } as any);
+      sinon.stub(bcrypt, "compare").resolves(true);
+      sinon
+        .stub(Token, "generateToken")
+        .resolves(
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjY2NjEwOTczfQ.TLub2yP8JKI7NsJZkCul9AwXBpZNKoreHDcnazrY8S8"
+        );
+      sinon
+        .stub(Teams, "findByPk")
+        .onFirstCall()
+        .resolves(null)
+        .onSecondCall()
+        .resolves(teams[7] as any);
+
+      const httpResponseLogin = await chai.request(app).post("/login").send({
+        email: "admin@admin.com",
+        password: "secret_admin",
+      });
+
+      const { token } = httpResponseLogin.body;
+
+      const httpResponse = await chai
+        .request(app)
+        .post("/matches")
+        .send({
+          homeTeam: 16,
+          awayTeam: 8,
+          homeTeamGoals: 2,
+          awayTeamGoals: 2,
+        })
+        .set("Authorization", token);
+
+      expect(httpResponse.status).to.be.equal(statusHttp.notFound);
+      expect(httpResponse.body).to.deep.equal({
+        message: messages.notFoundTeam,
+      });
+
+      sinon.restore();
+    });
+
+    it('Receive status "422" with equals teams', async () => {
+      sinon
+        .stub(Users, "findOne")
+        .resolves({
+          email: "admin@admin.com",
+          password: "secrect_admin",
+        } as any);
+      sinon.stub(bcrypt, "compare").resolves(true);
+      sinon
+        .stub(Token, "generateToken")
+        .resolves(
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjY2NjEwOTczfQ.TLub2yP8JKI7NsJZkCul9AwXBpZNKoreHDcnazrY8S8"
+        );
+      sinon
+        .stub(Teams, "findByPk")
+        .onFirstCall()
+        .resolves(teams[7] as any)
+        .onSecondCall()
+        .resolves(teams[7] as any);
+
+      const httpResponseLogin = await chai.request(app).post("/login").send({
+        email: "admin@admin.com",
+        password: "secret_admin",
+      });
+
+      const { token } = httpResponseLogin.body;
+
+      const httpResponse = await chai
+        .request(app)
+        .post("/matches")
+        .send({
+          homeTeam: 8,
+          awayTeam: 8,
+          homeTeamGoals: 2,
+          awayTeamGoals: 2,
+        })
+        .set("Authorization", token);
+
+      expect(httpResponse.status).to.be.equal(statusHttp.unprocessable);
+      expect(httpResponse.body).to.deep.equal({
+        message: messages.equalsTeam,
+      });
+
+      sinon.restore();
+    });
+  });
 });
 
 describe('6 - Test the endpoint "/matches?inProgress=true":', () => {

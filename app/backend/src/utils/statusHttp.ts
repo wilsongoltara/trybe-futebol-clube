@@ -4,6 +4,7 @@ const statusHttp = {
   badRequest: 400,
   unauthorized: 401,
   notFound: 404,
+  unprocessable: 422,
   internalError: 500,
 };
 
