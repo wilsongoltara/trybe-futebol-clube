@@ -45,4 +45,8 @@ export default class MatchesServices {
   async updateProgress(id: number): Promise<void> {
     await this._model.update({ inProgress: false }, { where: { id } });
   }
+
+  async updateMatch(id: number, awayTeamGoals: number, homeTeamGoals: number): Promise<void> {
+    await this._model.update({ awayTeamGoals, homeTeamGoals }, { where: { id } });
+  }
 }
