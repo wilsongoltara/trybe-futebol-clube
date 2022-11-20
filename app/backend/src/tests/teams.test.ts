@@ -14,8 +14,8 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('-- Test the endpoint: "/teams":', () => { 
-  describe("- Request made successfully:", () => {
+describe('7 - Test the endpoint: "/teams":', () => { 
+  describe("7.1 - Request made successfully:", () => {
     beforeEach(() => sinon.stub(Teams, "findAll").resolves(teams as any));
     afterEach(sinon.restore);
 
@@ -25,35 +25,33 @@ describe('-- Test the endpoint: "/teams":', () => {
       expect(httpResponse.status).to.be.equal(statusHttp.ok);
       expect(httpResponse.body).to.deep.equal(teams);
     });
-
-    
   });
+});
 
-  describe('-- Test the endpoint "/teams/:id":', () => {
-    describe("- Request made unsuccessfully:", () => {
-      beforeEach(() => sinon.stub(Teams, "findByPk").resolves(null));
-      afterEach(sinon.restore);
+describe('8 - Test the endpoint "/teams/:id":', () => {
+  describe("8.1 - Request made unsuccessfully:", () => {
+    beforeEach(() => sinon.stub(Teams, "findByPk").resolves(null));
+    afterEach(sinon.restore);
 
-      it('Receive status "404"', async () => {
-        const httpResponse = await chai.request(app).get("/teams/20");
+    it('Receive status "404"', async () => {
+      const httpResponse = await chai.request(app).get("/teams/20");
 
-        expect(httpResponse.status).to.be.equal(statusHttp.notFound);
-        expect(httpResponse.body).to.deep.equal({
-          message: errorMessages.notFoundTeam,
-        });
+      expect(httpResponse.status).to.be.equal(statusHttp.notFound);
+      expect(httpResponse.body).to.deep.equal({
+        message: errorMessages.notFoundTeam,
       });
     });
+  });
 
-    describe("- Request made successfully:", () => {
-      beforeEach(() => sinon.stub(Teams, "findByPk").resolves(teams[0] as any));
-      afterEach(sinon.restore);
+  describe("8.2 - Request made successfully:", () => {
+    beforeEach(() => sinon.stub(Teams, "findByPk").resolves(teams[0] as any));
+    afterEach(sinon.restore);
 
-      it('Get team and receive status "200"', async () => {
-        const httpResponse = await chai.request(app).get("/teams/1");
+    it('Get team and receive status "200"', async () => {
+      const httpResponse = await chai.request(app).get("/teams/1");
 
-        expect(httpResponse.status).to.be.equal(statusHttp.ok);
-        expect(httpResponse.body).to.deep.equal(teams[0]);
-      });
+      expect(httpResponse.status).to.be.equal(statusHttp.ok);
+      expect(httpResponse.body).to.deep.equal(teams[0]);
     });
   });
 });

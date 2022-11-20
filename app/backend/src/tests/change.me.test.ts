@@ -10,8 +10,8 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('-- Teste the endpoint "/":', () => {
-  describe('- Successful request: -', () => {
+describe('1 - Teste the endpoint "/":', () => {
+  describe('1.1 - Successful request: -', () => {
     it('Receive message "ok"', async () => {
       const httpResponse = await chai.request(app).get("/");
       expect(httpResponse.body).to.deep.equal({ ok: true });
@@ -20,7 +20,7 @@ describe('-- Teste the endpoint "/":', () => {
 
 });
 
-describe("-- Teste the error middleware:", () => {
+describe("2 - Teste the error middleware:", () => {
   it('Receive status "500"', async () => {
     sinon.stub(LoginService.prototype, "login").rejects();
 

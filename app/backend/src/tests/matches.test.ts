@@ -20,8 +20,8 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('-- Test the endpoint: "/matches":', () => {
-  describe("- Request made successfully:", () => {
+describe('5 - Test the endpoint: "/matches":', () => {
+  describe("5.1 - Request made successfully:", () => {
     beforeEach(() => sinon.stub(Matches, "findAll").resolves(matches as any));
     afterEach(sinon.restore);
 
@@ -77,8 +77,8 @@ describe('-- Test the endpoint: "/matches":', () => {
   });
 });
 
-describe('-- Test the endpoint "/matches?inProgress=true":', () => {
-  describe("- Request made successfully:", () => {
+describe('6 - Test the endpoint "/matches?inProgress=true":', () => {
+  describe("6.1 - Request made successfully:", () => {
     beforeEach(() =>
       sinon.stub(Matches, "findAll").resolves(matchesInProgress as any)
     );

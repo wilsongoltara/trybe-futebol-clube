@@ -15,8 +15,8 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('-- Test the endpoint "/login":', () => {
-  describe("- Unsuccesseful login:", () => {
+describe('3 - Test the endpoint "/login":', () => {
+  describe("3.1 - Unsuccesseful login:", () => {
     it('Without password field: receive status "400"', async () => {
       const httpResponseOnlyEmail = await chai
         .request(app)
@@ -83,7 +83,7 @@ describe('-- Test the endpoint "/login":', () => {
     });
   });
 
-  describe("- Successefull login:", () => {
+  describe("3.2 - Successefull login:", () => {
     beforeEach(() => {
       sinon.stub(Users, "findOne").resolves({
         email: "admin@admin.com",
@@ -117,8 +117,8 @@ describe('-- Test the endpoint "/login":', () => {
   });
 });
 
-describe('-- Test endpoint "/login/validate":', () => {
-  describe('- Unsuccessful auth:', () => {
+describe('4 - Test endpoint "/login/validate":', () => {
+  describe('4.1 - Unsuccessful auth:', () => {
     it('Receive stauts "401" not token', async () => {
       const httpResponse = await chai.request(app).get('/login/validate').send();
 
@@ -137,7 +137,7 @@ describe('-- Test endpoint "/login/validate":', () => {
     });
   });
   
-  describe('- Successuful auth:', () => {
+  describe('4.2 - Successuful auth:', () => {
     beforeEach(() => {
       sinon.stub(Users, 'findOne')
         .resolves({ email: 'admin@admin.com', password: 'secrect_admin' } as any);
