@@ -5,6 +5,20 @@ import Teams from '../database/models/TeamsModel';
 export default class MatchesServices {
   constructor(private _model = Matches) {}
 
+  async createMatch(match: IMatches): Promise<IMatches> {
+    const { awayTeam, awayTeamGoals, homeTeam, homeTeamGoals } = match;
+
+    const newMatch = await this._model.create({
+      awayTeam,
+      awayTeamGoals,
+      homeTeam,
+      homeTeamGoals,
+      inProgress: true,
+    });
+
+    return newMatch;
+  }
+
   async getListMatches(): Promise<Matches[]> {
     const matches = await this._model.findAll({
       include: [
@@ -28,17 +42,7 @@ export default class MatchesServices {
     return matchesInProgress;
   }
 
-  async createMatch(match: IMatches): Promise<IMatches> {
-    const { awayTeam, awayTeamGoals, homeTeam, homeTeamGoals } = match;
-
-    const newMatch = await this._model.create({
-      awayTeam,
-      awayTeamGoals,
-      homeTeam,
-      homeTeamGoals,
-      inProgress: true,
-    });
-
-    return newMatch;
+  async updateProgress(id: number): Promise<void> {
+    await this._model.update({ inProgress: false }, { where: { id } });
   }
 }
