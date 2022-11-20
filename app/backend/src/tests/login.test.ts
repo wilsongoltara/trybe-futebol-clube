@@ -1,21 +1,22 @@
 import * as sinon from "sinon";
 import * as chai from "chai";
+import * as bcrypt from "bcryptjs";
+
 // @ts-ignore
 import chaiHttp = require("chai-http");
 
 import { app } from "../app";
-import Users from "../database/models/UsersModel";
 import errorMessages from "../utils/errorMessages";
 import statusHttp from "../utils/statusHttp";
 import Token from "../utils/generateToken";
-import * as bcrypt from "bcryptjs";
+import Users from "../database/models/UsersModel";
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Test the endpoint "/login":', () => {
-  describe("Unsuccesseful login:", () => {
+describe('-- Test the endpoint "/login":', () => {
+  describe("- Unsuccesseful login:", () => {
     it('Without password field: receive status "400"', async () => {
       const httpResponseOnlyEmail = await chai
         .request(app)
@@ -82,7 +83,7 @@ describe('Test the endpoint "/login":', () => {
     });
   });
 
-  describe("Successefull login:", () => {
+  describe("- Successefull login:", () => {
     beforeEach(() => {
       sinon.stub(Users, "findOne").resolves({
         email: "admin@admin.com",
@@ -116,8 +117,8 @@ describe('Test the endpoint "/login":', () => {
   });
 });
 
-describe('Test endpoint "/login/validate"', () => {
-  describe('Unsuccessful auth', () => {
+describe('-- Test endpoint "/login/validate":', () => {
+  describe('- Unsuccessful auth:', () => {
     it('Receive stauts "401" not token', async () => {
       const httpResponse = await chai.request(app).get('/login/validate').send();
 
@@ -136,7 +137,7 @@ describe('Test endpoint "/login/validate"', () => {
     });
   });
   
-  describe('Successuful auth', () => {
+  describe('- Successuful auth:', () => {
     beforeEach(() => {
       sinon.stub(Users, 'findOne')
         .resolves({ email: 'admin@admin.com', password: 'secrect_admin' } as any);
