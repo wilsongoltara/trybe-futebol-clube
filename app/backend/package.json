@@ -60,6 +60,6 @@
     "jest": "27.4.3",
     "jsonwebtoken": "9.0.0",
     "mysql2": "2.3.3",
-    "sequelize": "6.9.0"
+    "sequelize": "6.28.2"
   }
 }
